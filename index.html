@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salt City Services Co | Operations Automation Consultant</title>
+  <meta name="description" content="Zendesk Certified Administrator and Google Workspace architect helping small businesses stop running on manual chaos. Google Apps Script, Airtable, workflow automation." />
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal:      #1B4D5C;
+      --teal-dark: #133845;
+      --teal-light:#2a6b80;
+      --gold:      #C9954C;
+      --gold-dark: #a87a3a;
+      --cream:     #F8F5F0;
+      --white:     #ffffff;
+      --text:      #1a1a1a;
+      --text-muted:#5a5a5a;
+      --border:    #ddd8d0;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Layout Helpers ──────────────────────────────────────── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section { padding: 80px 0; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .section-intro {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin-bottom: 48px;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--teal);
+      padding: 16px 24px;
+    }
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+    .nav-logo span { color: var(--gold); }
+    .btn-nav {
+      background: var(--gold);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 8px 20px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .btn-nav:hover { background: var(--gold-dark); }
+
+    /* ── HERO ────────────────────────────────────────────────── */
+    .hero {
+      background: var(--teal);
+      color: var(--white);
+      padding: 96px 24px 80px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 720px;
+      margin: 0 auto 24px;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.82);
+      max-width: 580px;
+      margin: 0 auto 40px;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-dark); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 13px 30px;
+      border-radius: 4px;
+      border: 2px solid rgba(255,255,255,0.45);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--white); }
+
+    /* ── PROBLEM ─────────────────────────────────────────────── */
+    .problem { background: var(--cream); }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 28px;
+    }
+    .problem-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 28px 24px;
+    }
+    .problem-icon {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+    .problem-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .problem-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ── SERVICES ────────────────────────────────────────────── */
+    .services { background: var(--white); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+      gap: 24px;
+    }
+    .service-card {
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 32px 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .service-card:hover {
+      border-color: var(--teal);
+      transform: translateY(-3px);
+    }
+    .service-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .service-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .service-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      border-radius: 3px;
+      padding: 3px 8px;
+      margin-bottom: 14px;
+    }
+
+    /* ── PROOF ───────────────────────────────────────────────── */
+    .proof { background: var(--cream); }
+    .proof-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .proof-list li {
+      background: var(--white);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 6px 6px 0;
+      padding: 20px 24px;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--text);
+    }
+    .proof-list li strong {
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    /* ── ABOUT ───────────────────────────────────────────────── */
+    .about { background: var(--white); }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .about-bio p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .about-certs h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .cert-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cert-list li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--teal);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .cert-list li a:hover { color: var(--gold); }
+    .cert-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* ── CONTACT ─────────────────────────────────────────────── */
+    .contact {
+      background: var(--teal);
+      color: var(--white);
+      text-align: center;
+    }
+    .contact .section-title { color: var(--white); }
+    .contact p {
+      color: rgba(255,255,255,0.8);
+      font-size: 1.05rem;
+      max-width: 500px;
+      margin: 0 auto 36px;
+    }
+    .contact-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-contact-primary {
+      background: var(--gold);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .btn-contact-primary:hover { background: var(--gold-dark); }
+    .btn-contact-secondary {
+      background: transparent;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 13px 30px;
+      border-radius: 4px;
+      border: 2px solid rgba(255,255,255,0.45);
+      transition: border-color 0.2s;
+    }
+    .btn-contact-secondary:hover { border-color: var(--white); }
+
+    /* ── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      background: var(--teal-dark);
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      padding: 24px;
+      font-size: 0.85rem;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .section { padding: 60px 0; }
+      .about-inner { grid-template-columns: 1fr; gap: 36px; }
+      .hero { padding: 72px 24px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <span class="nav-logo">Salt City <span>Services Co</span></span>
+      <a href="#contact" class="btn-nav">Hire Me</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eyebrow">Operations Automation Consultant</p>
+      <h1>Your team is doing it by hand.<br>Let's fix that.</h1>
+      <p>Google Workspace &amp; Zendesk Systems for small businesses running on copy-paste and tribal knowledge.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-primary">Let's Talk</a>
+        <a href="https://www.upwork.com/freelancers/~011084d1a59ad1c7e6" target="_blank" rel="noopener" class="btn-secondary">View Upwork Profile</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem section">
+    <div class="container">
+      <p class="section-label">Sound Familiar?</p>
+      <h2 class="section-title">The patterns that slow you down</h2>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon">🔁</div>
+          <h3>The same steps, every time, by hand</h3>
+          <p>Your team repeats the same manual process dozens of times a week because no one has ever built the shortcut.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">🧠</div>
+          <h3>Knowledge lives in one person's head</h3>
+          <p>Onboarding takes months. When that person leaves, the process leaves with them. Nothing is written down.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">🔌</div>
+          <h3>Your tools don't talk to each other</h3>
+          <p>Data lives in three different places. Copying it between them is someone's actual job. It doesn't have to be.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services section">
+    <div class="container">
+      <p class="section-label">What I Do</p>
+      <h2 class="section-title">Three ways to work together</h2>
+      <p class="section-intro">Every engagement ends with a deployed system and a clear handoff — not a recommendation deck you'll never implement.</p>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-tag">Audit</span>
+          <h3>Workflow Audit</h3>
+          <p>I map your current operations, find the patterns your team repeats manually, and deliver a prioritized action plan. You see every bottleneck — and exactly what to fix first.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-tag">Build</span>
+          <h3>Custom Script Shop</h3>
+          <p>One specific pain point, automated. Google Apps Script built around the tool stack you already own — no new SaaS subscriptions, no black-box AI, just clean logic that runs on Google's infrastructure.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-tag">Optimize</span>
+          <h3>Zendesk Tune-up</h3>
+          <p>Your Zendesk is installed but not working hard enough. Triggers, automations, AI bot logic, queue routing, and Help Center architecture — rebuilt so your team stops managing tickets and starts closing them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section class="proof section">
+    <div class="container">
+      <p class="section-label">Proof</p>
+      <h2 class="section-title">Systems already in the field</h2>
+      <p class="section-intro">Built for real organizations, handed off, and still running.</p>
+      <ul class="proof-list">
+        <li><strong>Rebuilt a Zendesk environment from the ground up</strong> — triggers, automations, macros, AI bot logic, queue routing, and Help Center architecture for a multi-channel retail operation scaling through high-volume holiday seasons. Rated top performer while simultaneously improving the systems the entire team ran on.</li>
+        <li><strong>Designed and deployed a sponsorship operations system</strong> for a youth sports organization — tracking architecture, outreach templates, and renewal process targeting $7,500–$12,000/season across ~20 sponsors. System was handed off to a volunteer board and runs without the original builder.</li>
+        <li><strong>Coordinated full logistics for a 4,819-bag fundraiser delivery</strong> — run routing system, volunteer coordination workflow, and post-event documentation. 123 runs, 3 trucks, clean execution with a volunteer crew.</li>
+        <li><strong>Built onboarding and training documentation</strong> for a seasonal CX team — SharePoint + Zendesk knowledge base, visual training materials, and a repeatable ramp process that cut onboarding time for new hires during peak periods.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about section">
+    <div class="container">
+      <div class="about-inner">
+        <div class="about-bio">
+          <p class="section-label">About</p>
+          <h2 class="section-title">Stacey Page</h2>
+          <p>I'm a Zendesk Certified Administrator and Google Workspace architect based in Saline, Michigan. My background is in customer experience operations, but what I actually do is find the patterns teams repeat by hand and compress them into systems that run without constant supervision.</p>
+          <p>I specialize in Google Apps Script automation, Zendesk configuration, Airtable architecture, and Google Workspace integration. No expensive SaaS, no black-box AI — just clean logic running on infrastructure you already own.</p>
+        </div>
+        <div class="about-certs">
+          <h3>Zendesk Certifications</h3>
+          <ul class="cert-list">
+            <li><a href="https://www.credly.com" target="_blank" rel="noopener"><span class="cert-dot"></span>Zendesk Administrator (Messaging)</a></li>
+            <li><a href="https://www.credly.com" target="_blank" rel="noopener"><span class="cert-dot"></span>Zendesk Guide / Self-Service</a></li>
+            <li><a href="https://www.credly.com" target="_blank" rel="noopener"><span class="cert-dot"></span>Zendesk Talk / Voice</a></li>
+            <li><a href="https://www.credly.com" target="_blank" rel="noopener"><span class="cert-dot"></span>Zendesk Explore / Analytics</a></li>
+            <li><a href="https://www.credly.com" target="_blank" rel="noopener"><span class="cert-dot"></span>Zendesk Foundational Support</a></li>
+            <li><a href="https://www.credly.com" target="_blank" rel="noopener"><span class="cert-dot"></span>Zendesk Omnichannel Agent</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact section" id="contact">
+    <div class="container">
+      <p class="section-label">Get In Touch</p>
+      <h2 class="section-title">Ready to stop doing it by hand?</h2>
+      <p>Tell me what's broken. I'll tell you what to fix first — and whether we're a good fit.</p>
+      <div class="contact-buttons">
+        <a href="mailto:pagefamily17@gmail.com" class="btn-contact-primary">Send an Email</a>
+        <a href="https://www.upwork.com/freelancers/~011084d1a59ad1c7e6" target="_blank" rel="noopener" class="btn-contact-secondary">Hire on Upwork</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Salt City Services Co &mdash; Saline, Michigan</p>
+  </footer>
+
+</body>
+</html>
